@@ -34,7 +34,7 @@
   <circle cx="64" cy="20" r="5.5" fill="#3fb950" opacity="0.9"/>
 
   <!-- Subtle glow on the bottom -->
-  <rect x="40" y="100" width="400" height="50" rx="4" fill="url(#glow)" opacity="0.15"/>
+  <!-- <rect x="40" y="100" width="400" height="50" rx="4" fill="url(#glow)" opacity="0.15"/> -->
 
   <!-- Prompt symbol -->
   <text x="36" y="105" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="52" font-weight="700" fill="#8b949e" filter="url(#textglow)">❯</text>
@@ -48,6 +48,6 @@
   </rect>
 
   <!-- Tagline -->
-  <text x="260" y="100" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="18" fill="#8b949e" letter-spacing="0.5">Shell Assistant</text>
+  <text x="260" y="100" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="22" fill="#8b949e" letter-spacing="0.5">in a shell</text>
 
 </svg>
