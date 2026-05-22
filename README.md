@@ -137,19 +137,56 @@ If the AI returns a multi-line command and `$EDITOR` is set, the script opens th
 ## Examples
 Prefix these queries with `ai` in your terminal to try them out:
 
+**General:**
 - which process is running on port 8000
 - numeric for loop boilerplate going from 5 to 15
 - restart openssh
 - start a simple webserver using python3
+- create a small webserver with netcat
+- generate a random 32 character alphanumeric password
+
+**Files & search:**
 - rename every file in ./images from .jpg to .png
 - resize all of images in ./images to a maximum of 100 pixels in any dimension
-- create a small webserver with netcat
+- find all files modified in the last 24 hours
+- count lines of code in all .py files recursively
+- find duplicate files by checksum in the current directory
+- replace all occurrences of "foo" with "bar" across all .js files
+- show the 10 largest files in this directory tree
+
+**Git & version control:**
+- show me the diff stats for the last 5 commits
+- undo the last commit but keep the changes
+- find all commits that touched config.yaml in the last month
+- squash the last 3 commits into one
+- list branches merged into main that can be deleted
+
+**Networking & system:**
 - get the ips that amazon.com resolves to and ping each one
 - list all network interfaces and their ip addresses
-- print out the source of function __git_ps1
+- show all open TCP connections sorted by state
+- test if ports 80 443 and 8080 are open on example.com
+- show memory usage of the top 10 processes
+- download a website recursively for offline reading
+
+**Docker & devops:**
 - delete all unused docker images
+- show logs from the last 30 minutes for the api container
+- run a one-off postgres client connected to the db container
+- list all containers with their IP addresses
+- remove all stopped containers and dangling volumes
+- build and tag an image from the current directory as app:latest
+
+**Text & data:**
+- extract all email addresses from access.log
+- convert a csv file to json using jq
+- show a sorted frequency count of HTTP status codes in access.log
+- diff two json files ignoring key order
+
+**Media:**
 - concatenate two .mkv video files
 - use ffmpeg to shrink an mp4 file's size
 - use imagemagick change the white background in screenshot.png to transparent
+- print out the source of function __git_ps1
 
 **WARNING**: Always carefully check the output from the AI for bugs or other issues. Do not run the output unless you completely understand what it is doing. You are fully responsible for any commands you run. **This software comes with ABSOLUTELY NO WARRANTY, to the extent permitted by applicable law.**
