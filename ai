@@ -305,6 +305,10 @@ _ai_resp_file=$(mktemp "${TMPDIR:-/tmp}/ai_resp.XXXXXX") || {
   return 1
 }
 
+# Suppress "[1]+ Done ..." job notifications from the background curl
+case $- in *m*) _ai_had_monitor=1 ;; *) _ai_had_monitor=0 ;; esac
+set +m
+
 case "$AI_PROVIDER" in
   openai)
     curl -s --max-time "$AI_TIMEOUT" "https://api.openai.com/v1/chat/completions" \
@@ -352,6 +356,10 @@ fi
 
 wait "$_ai_pid"
 _ai_curl_exit=$?
+
+# Restore monitor mode if it was previously on
+[ "$_ai_had_monitor" = 1 ] && set -m
+
 _ai_json=$(cat "$_ai_resp_file")
 rm -f "$_ai_data_file" "$_ai_resp_file"
 
@@ -441,10 +449,8 @@ elif [ -n "$_ai_result" ]; then
     if [ "$_AI_DETECTED_SHELL" = "zsh" ]; then
       print -s "$1"
     elif [ "$_AI_DETECTED_SHELL" = "bash" ]; then
-      set -o history
-      shopt -s histappend
       history -s "$1"
-      history -w
+      history -a
     fi
   }
 
@@ -478,7 +484,7 @@ fi
 unset _AI_DETECTED_SHELL _AI_DETECTED_OS _AI_RUN _AI_SILENT _AI_QUERY
 unset _AI_CTX _AI_SYS _AI_USR _AI_JQ _AI_CP _AI_EP
 unset _ai_a _ai_br _ai_mod _ai_stg
-unset _ai_fi _ai_sc _ai_pid _ai_lc _ai_curl_exit
+unset _ai_fi _ai_sc _ai_pid _ai_lc _ai_curl_exit _ai_had_monitor
 unset _ai_data_file _ai_resp_file _ai_ef
 unset _ai_json _ai_content _ai_result _ai_error _ai_re
 unset _ai_esc_s _ai_esc_u

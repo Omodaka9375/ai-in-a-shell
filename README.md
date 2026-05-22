@@ -25,6 +25,12 @@ On Windows, use one of these bash-compatible environments:
 ```bash
 curl https://raw.githubusercontent.com/Omodaka9375/ai-in-a-shell/main/ai > ~/bin/ai && chmod 755 ~/bin/ai
 
+# or create bin folder if you haven't already
+
+mkdir -p ~/bin && curl -L https://raw.githubusercontent.com/Omodaka9375/ai-in-a-shell/main/ai -o ~/bin/ai && chmod 755 ~/bin/ai
+```
+
+```bash
 # Add this to your ~/.bashrc or ~/.zshrc to use it as 'ai':
 alias ai='. ~/bin/ai'
 ```
