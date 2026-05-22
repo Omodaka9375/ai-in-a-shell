@@ -43,11 +43,11 @@
   <text x="100" y="107" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="64" font-weight="800" letter-spacing="-2" fill="#f0f6fc" filter="url(#textglow)">ai</text>
 
   <!-- Cursor -->
-  <rect x="228" y="68" width="4" height="48" rx="2" fill="#3fb950" opacity="0.9" filter="url(#softglow)">
+  <rect x="200" y="68" width="4" height="48" rx="2" fill="#3fb950" opacity="0.9" filter="url(#softglow)">
     <animate attributeName="opacity" values="0.9;0.2;0.9" dur="1.2s" repeatCount="indefinite"/>
   </rect>
 
   <!-- Tagline -->
-  <text x="260" y="100" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="22" fill="#8b949e" letter-spacing="0.5">in a shell</text>
+  <text x="230" y="100" font-family="'SF Mono','Cascadia Code','Fira Code','JetBrains Mono',monospace" font-size="22" fill="#8b949e" letter-spacing="0.5">in a shell</text>
 
 </svg>
