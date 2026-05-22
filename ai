@@ -32,11 +32,11 @@ OPTIONS:
   -h/--help  Show this help.
 
 EXAMPLES:
-  . ai which process is running on port 8000
-  . ai --run list all docker containers
-  . ai --silent find large files in home | xargs du -sh
+  ai which process is running on port 8000
+  ai --run list all docker containers
+  ai --silent find large files in home | xargs du -sh
 
-NOTE: You must include the '.' (dot) to source the script.
+NOTE: You must include the '.' (dot) to source the script if you didn't add alias.
       The result is added to history — press up-arrow to access it.
 HELP
   return 0 2>/dev/null
