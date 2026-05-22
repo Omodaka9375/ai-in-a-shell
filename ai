@@ -491,3 +491,6 @@ unset _ai_esc_s _ai_esc_u
 unset _C _CB _CR _CG _CC _CY _CD
 unset -f _ai_cleanup _ai_add_history
 trap - SIGINT EXIT
+
+# Author: Branislav Djalic
+# License: MIT
