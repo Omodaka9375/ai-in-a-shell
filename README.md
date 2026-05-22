@@ -23,7 +23,7 @@ On Windows, use one of these bash-compatible environments:
 ## Install
 
 ```bash
-# Copy ai file to ~/bin/ then do: chmod 755 ~/bin/ai
+curl https://raw.githubusercontent.com/Omodaka9375/ai-in-a-shell/main/ai > ~/bin/ai && chmod 755 ~/bin/ai
 
 # Add this to your ~/.bashrc or ~/.zshrc to use it as 'ai':
 alias ai='. ~/bin/ai'
