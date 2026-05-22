@@ -1,0 +1,14 @@
+# Editors
+.*.swp
+*~
+*.bak
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Config with secrets
+.ai
