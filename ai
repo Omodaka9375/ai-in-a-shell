@@ -7,7 +7,7 @@
 # ============================================================
 # Override any of these in ~/.ai or via environment variables.
 #
-#   AI_PROVIDER      openai | anthropic | gemini | custom    (default: openai)
+#   AI_PROVIDER      openai | anthropic | gemini | custom    (default: anthropic)
 #   AI_MODEL         Model name per provider                 (default: per-provider)
 #   AI_SHELL         Target shell for generated commands     (default: auto-detect)
 #   AI_OS            Target OS for generated commands        (default: auto-detect)
