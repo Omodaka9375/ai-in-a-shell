@@ -270,7 +270,7 @@ if [ "$_AI_JQ" = 1 ]; then
         > "$_ai_data_file" ;;
     anthropic)
       jq -n \
-        --arg m "${AI_MODEL:-claude-haiku-4-5-20250514}" \
+        --arg m "${AI_MODEL:-claude-haiku-4-5}" \
         --arg s "$_AI_SYS" \
         --arg u "$_AI_USR" \
         '{model:$m,max_tokens:1024,temperature:0.2,system:$s,messages:[{role:"user",content:$u}]}' \
