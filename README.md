@@ -96,7 +96,7 @@ echo "My IP is: $(ai --silent get my public ip address)"
 All options live in `~/.ai` or can be exported as environment variables:
 
 ```bash
-AI_PROVIDER="anthropic"               # openai | anthropic | gemini | custom | local
+AI_PROVIDER="anthropic"               # openai | anthropic | gemini | local
 AI_MODEL="claude-haiku-4-5"           # override the default model
 AI_SHELL="zsh"                        # override detected shell
 AI_OS="macOS"                         # override detected OS
