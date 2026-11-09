@@ -7,7 +7,7 @@
 # ============================================================
 # Override any of these in ~/.ai or via environment variables.
 #
-#   AI_PROVIDER      openai | anthropic | gemini | custom    (default: anthropic)
+#   AI_PROVIDER      openai | anthropic | gemini | custom | local  (default: anthropic)
 #   AI_MODEL         Model name per provider                 (default: per-provider)
 #   AI_SHELL         Target shell for generated commands     (default: auto-detect)
 #   AI_OS            Target OS for generated commands        (default: auto-detect)
@@ -15,9 +15,10 @@
 #   AI_EDITOR_MODE   Open multi-line results in $EDITOR: 1|0 (default: 1)
 #   AI_TIMEOUT       Curl timeout in seconds                 (default: 30)
 #
-# API keys (one required — set in ~/.ai):
+# API keys (set in ~/.ai; the "local" provider needs none):
 #   OPENAI_API_KEY      ANTHROPIC_API_KEY      GEMINI_API_KEY
 #   AI_CUSTOM_API_URL + AI_CUSTOM_API_KEY
+#   Local provider: AI_LOCAL_API_URL (+ optional AI_LOCAL_API_KEY) and AI_MODEL
 # ============================================================
 
 # --- help ---
@@ -60,6 +61,12 @@ if [ "$1" = "--setup" ]; then
 # ── Custom OpenAI-compatible endpoint ────────────────────
 #AI_CUSTOM_API_URL="https://your-endpoint/v1/chat/completions"
 #AI_CUSTOM_API_KEY="your-key"
+
+# ── Local model endpoint (OpenAI-compatible: Ollama, LM Studio, llama.cpp) ─
+#AI_PROVIDER="local"
+#AI_LOCAL_API_URL="http://localhost:11434/v1/chat/completions"
+#AI_LOCAL_API_KEY="only-if-your-server-needs-one"
+#AI_MODEL="llama3.2"              # required for the local provider
 
 # ── Provider & Model ─────────────────────────────────────
 #AI_PROVIDER="openai"             # openai | anthropic | gemini | custom
@@ -192,6 +199,7 @@ esac
 : "${AI_CONTEXT:=1}"
 : "${AI_EDITOR_MODE:=1}"
 : "${AI_TIMEOUT:=30}"
+: "${AI_LOCAL_API_URL:=http://localhost:11434/v1/chat/completions}"
 
 # --- parse flags ---
 _AI_RUN=0
@@ -213,8 +221,8 @@ if [ -z "$_AI_QUERY" ]; then
   return 0
 fi
 
-# --- API key check ---
-if [ -z "${OPENAI_API_KEY:-}" ] && [ -z "${ANTHROPIC_API_KEY:-}" ] && \
+# --- API key check (the local provider needs none) ---
+if [ "$AI_PROVIDER" != "local" ] && [ -z "${OPENAI_API_KEY:-}" ] && [ -z "${ANTHROPIC_API_KEY:-}" ] && \
    [ -z "${GEMINI_API_KEY:-}" ] && [ -z "${AI_CUSTOM_API_KEY:-}" ]; then
   _ai_err "No API key found. Run '. ai --setup' to configure, or see README.md."
   _ai_bail
@@ -238,6 +246,9 @@ case "$AI_PROVIDER" in
       _ai_bail
       return 1
     fi ;;
+  local)
+    [ -z "${AI_MODEL:-}" ] && \
+      { _ai_err "AI_MODEL must be set for the local provider (e.g. AI_MODEL=\"llama3.2\")."; _ai_bail; return 1; } ;;
   *)
     _ai_err "Unknown provider '$AI_PROVIDER'."
     _ai_bail
@@ -289,7 +300,7 @@ _ai_data_file=$(mktemp "${TMPDIR:-/tmp}/ai_data.XXXXXX") || {
 
 if [ "$_AI_JQ" = 1 ]; then
   case "$AI_PROVIDER" in
-    openai|custom)
+    openai|custom|local)
       jq -n \
         --arg m "${AI_MODEL:-gpt-5.1-nano}" \
         --arg s "$_AI_SYS" \
@@ -325,7 +336,7 @@ else
     | sed -e 's/\\/\\\\/g' -e 's/"/\\"/g' | tr -d '\n')
 
   case "$AI_PROVIDER" in
-    openai|custom)
+    openai|custom|local)
       printf '{"model":"%s","temperature":0.2,"messages":[{"role":"system","content":"%s"},{"role":"user","content":"%s"}]}' \
         "${_ai_esc_m:-gpt-5.1-nano}" "$_ai_esc_s" "$_ai_esc_u" > "$_ai_data_file" ;;
     anthropic)
@@ -360,6 +371,18 @@ case "$AI_PROVIDER" in
       -H "Authorization: Bearer ${AI_CUSTOM_API_KEY}" \
       -H 'Content-Type: application/json' \
       -d "@${_ai_data_file}" > "$_ai_resp_file" 2>/dev/null &
+    ;;
+  local)
+    if [ -n "${AI_LOCAL_API_KEY:-}" ]; then
+      curl -s --max-time "$AI_TIMEOUT" "${AI_LOCAL_API_URL}" \
+        -H "Authorization: Bearer ${AI_LOCAL_API_KEY}" \
+        -H 'Content-Type: application/json' \
+        -d "@${_ai_data_file}" > "$_ai_resp_file" 2>/dev/null &
+    else
+      curl -s --max-time "$AI_TIMEOUT" "${AI_LOCAL_API_URL}" \
+        -H 'Content-Type: application/json' \
+        -d "@${_ai_data_file}" > "$_ai_resp_file" 2>/dev/null &
+    fi
     ;;
   anthropic)
     curl -s --max-time "$AI_TIMEOUT" "https://api.anthropic.com/v1/messages" \
@@ -421,7 +444,7 @@ _ai_result=""
 _ai_error=""
 
 case "$AI_PROVIDER" in
-  openai|custom)
+  openai|custom|local)
     _AI_CP='.choices[0].message.content'
     _AI_EP='.error.message // .error' ;;
   anthropic)
@@ -445,7 +468,7 @@ if [ -n "$_ai_json" ]; then
   else
     # Regex fallback (no jq)
     case "$AI_PROVIDER" in
-      openai|custom) _ai_re='"content": *"' ;;
+      openai|custom|local) _ai_re='"content": *"' ;;
       *)             _ai_re='"text": *"' ;;
     esac
     # Unescape via placeholder bytes so \" \\ and \n inside the returned

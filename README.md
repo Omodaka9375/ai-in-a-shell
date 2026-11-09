@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/shell-bash%20%7C%20zsh-green" alt="bash | zsh">
-  <img src="https://img.shields.io/badge/providers-OpenAI%20%7C%20Anthropic%20%7C%20Gemini%20%7C%20Custom-orange" alt="Providers">
+  <img src="https://img.shields.io/badge/providers-OpenAI%20%7C%20Anthropic%20%7C%20Gemini%20%7C%20Custom%20%7C%20Local-orange" alt="Providers">
 </p>
 
 ---
@@ -30,7 +30,7 @@ No dependencies beyond `curl`. No package managers. No runtimes. One file, drop 
 
 ### Highlights
 
-- 🔌 **Multi-provider** — OpenAI, Anthropic, Gemini, or any OpenAI-compatible endpoint
+- 🔌 **Multi-provider** — OpenAI, Anthropic, Gemini, any OpenAI-compatible endpoint, or a local model (Ollama, LM Studio, llama.cpp)
 - 📂 **Context-aware** — automatically includes your cwd, git branch, and modified files
 - ⚡ **`--run`** — skip confirmation and execute immediately
 - 🔗 **`--silent`** — raw output for piping and composition
@@ -96,7 +96,7 @@ echo "My IP is: $(ai --silent get my public ip address)"
 All options live in `~/.ai` or can be exported as environment variables:
 
 ```bash
-AI_PROVIDER="anthropic"               # openai | anthropic | gemini | custom
+AI_PROVIDER="anthropic"               # openai | anthropic | gemini | custom | local
 AI_MODEL="claude-haiku-4-5"           # override the default model
 AI_SHELL="zsh"                        # override detected shell
 AI_OS="macOS"                         # override detected OS
@@ -117,6 +117,11 @@ GEMINI_API_KEY=...
 # Custom OpenAI-compatible endpoint:
 AI_CUSTOM_API_URL="https://your-endpoint/v1/chat/completions"
 AI_CUSTOM_API_KEY="your-key"
+
+# Local model endpoint (no API key needed, e.g. Ollama):
+AI_PROVIDER="local"
+AI_LOCAL_API_URL="http://localhost:11434/v1/chat/completions"
+AI_MODEL="llama3.2"
 ```
 
 ### Context Awareness
