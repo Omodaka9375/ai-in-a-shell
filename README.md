@@ -76,7 +76,7 @@ ai [OPTIONS] QUERY
 | Option | Description |
 |-----------|----------------------------------------------|
 | `--run` | Execute the command immediately (skip confirmation). |
-| `--silent`| Output raw command only, for piping. Implies `--run`. |
+| `--silent`| Output raw command only, for piping (does not execute). |
 | `--setup` | Create or edit the `~/.ai` config file. |
 | `-h`      | Show help. |
 
@@ -102,7 +102,7 @@ AI_SHELL="zsh"                        # override detected shell
 AI_OS="macOS"                         # override detected OS
 AI_CONTEXT=1                          # include cwd & git context (default: 1)
 AI_EDITOR_MODE=1                      # open multi-line results in $EDITOR (default: 1)
-AI_TIMEOUT=10                         # curl timeout in seconds (default: 10)
+AI_TIMEOUT=30                         # curl timeout in seconds (default: 30)
 ```
 
 ### API Keys
